@@ -152,8 +152,15 @@ public class MenuConversiones extends javax.swing.JFrame {
 
     private void BtnBinarioADecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBinarioADecimalActionPerformed
         String StrBin = JOptionPane.showInputDialog(null, "Ingrese un numero binario: ");
-        int bin = Integer.parseInt(StrBin);
+        int[] bin = new int[StrBin.length()];
+        int cont = 0;
         
+        for (int i = StrBin.length() - 1; i >= 0; i--) {
+            bin[StrBin.length() - i - 1] = Integer.parseInt("" + StrBin.charAt(i));
+        }
+       
+        JOptionPane.showMessageDialog(null, "El numero binario " + StrBin + " en decimal es:\n" 
+                +binToDec(bin, cont,0) );
         
     }//GEN-LAST:event_BtnBinarioADecimalActionPerformed
 
@@ -201,6 +208,17 @@ public class MenuConversiones extends javax.swing.JFrame {
         });
     }
 
+    public static int binToDec(int[] bin, int cont, int decimal) {
+        // Recibe el binario ya dado vuelta
+        if (cont < bin.length)
+            if (bin[cont] == 1)
+                return binToDec(bin, cont+1, decimal + (int) Math.pow(2, cont));
+            else
+                return binToDec(bin, cont+1, decimal);
+        else
+            return decimal;
+    }//Fin metodo binToDec
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBinarioADecimal;
     private javax.swing.JButton BtnDecimalABinario;
