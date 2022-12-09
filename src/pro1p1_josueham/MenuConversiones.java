@@ -140,6 +140,7 @@ public class MenuConversiones extends javax.swing.JFrame {
         int dec = Integer.parseInt(StrDec);
         
         
+        JOptionPane.showMessageDialog(null, "El numero decimal " + dec + " en binario es:\n" + decToBin(dec));
     }//GEN-LAST:event_BtnDecimalABinarioActionPerformed
 
     private void BtnBinarioADecimalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnBinarioADecimalMouseEntered
@@ -210,14 +211,30 @@ public class MenuConversiones extends javax.swing.JFrame {
 
     public static int binToDec(int[] bin, int cont, int decimal) {
         // Recibe el binario ya dado vuelta
-        if (cont < bin.length)
-            if (bin[cont] == 1)
-                return binToDec(bin, cont+1, decimal + (int) Math.pow(2, cont));
+        if (cont < bin.length) //Decision base
+            if (bin[cont] == 1) //Si el binario en la posicion del contador es 1 
+                return binToDec(bin, cont+1, decimal + (int) Math.pow(2, cont)); //Si se cumple la condicion anterior se retorna y se llama el metodo, incrementando el contador
             else
-                return binToDec(bin, cont+1, decimal);
+                return binToDec(bin, cont+1, decimal); //Si no se cumple la condicion, se vuelve a llamar al metodo pero sin sumarle al decimal la potencia de 2^cont ya que ya seria 0
         else
-            return decimal;
+            return decimal;//Se retorna al final los cambios realizados al decimal
     }//Fin metodo binToDec
+    
+    
+    
+    public int decToBin (int dec){
+        if (dec < 2) { 
+            return dec; 
+        } else {
+            return dec%2 + decToBin(dec/2)*10;
+        }
+    }//Fin del metodo de decToBin
+    
+    
+    // la condicion del if es el caso base donde termina la ejecucion, en el else volvemos a llamar el metodo para realizar los calculos con el entero ingresado
+    //dec%2 no va a ser mayor de 2
+    //decToBin(dec/2) hace el llamado del metodo para hacer los calculos
+    //*10 para que se realice correctamente el binario 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBinarioADecimal;
