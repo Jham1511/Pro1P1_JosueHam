@@ -143,19 +143,24 @@ public class Recursion extends javax.swing.JFrame {
         String col = JOptionPane.showInputDialog(null, "Columnas de la matriz: ", "Columnas de la matriz", 1);
         int columnas = Integer.parseInt(col);
 
-        int[][] matriz1 = new int [filas][columnas];
-        crear(matriz1, filas, columnas);
+        int[][] matriz1 = new int[filas][columnas];
+        llenadoMatriz(matriz1, 0, 0);
 
         String fil2 = JOptionPane.showInputDialog(null, "Filas de la matriz 2: ", "Filas de la matriz", 1);
         int filas2 = Integer.parseInt(fil2);
         String col2 = JOptionPane.showInputDialog(null, "Columnas de la matriz 2: ", "Columnas de la matriz", 1);
         int columnas2 = Integer.parseInt(col2);
 
-        int[][] matriz2 = new int [filas2][columnas2];
-        crear(matriz2, filas2, columnas2);
-
+        int[][] matriz2 = new int[filas2][columnas2];
+         llenadoMatriz(matriz2, 0, 0);
+         
+         
+         int[][] matriz3 = new int [matriz1.length][matriz2[0].length];
+         
         if (columnas == filas2) {
-
+            JOptionPane.showMessageDialog(null, "\nMatriz A\n" + imprimirMatriz(llenadoMatriz(matriz1,0,0),0,0,""));
+            JOptionPane.showMessageDialog(null, "\nMatriz B\n" + imprimirMatriz(llenadoMatriz(matriz2,0,0),0,0,""));
+            JOptionPane.showMessageDialog(null, "\nMatriz C\n" + imprimirMatriz(multiplicacion(matriz1,matriz2,matriz3,0,0),0,0,""));
         }//Fin if
         else {
             JOptionPane.showMessageDialog(null, "Las columnas de la matriz 1 deben ser iguales a las filas de la matriz 2");
@@ -187,7 +192,7 @@ public class Recursion extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnMenuPrincipalActionPerformed
 
     private void BtnMultiplicacionRecMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnMultiplicacionRecMouseEntered
-       BtnMultiplicacionRec.setBackground(new Color(51, 51, 51));
+        BtnMultiplicacionRec.setBackground(new Color(51, 51, 51));
     }//GEN-LAST:event_BtnMultiplicacionRecMouseEntered
 
     private void BtnMultiplicacionRecMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnMultiplicacionRecMouseExited
@@ -229,28 +234,46 @@ public class Recursion extends javax.swing.JFrame {
         });
     }
 
-    public static int[][] crear(int[][] matriz, int filas, int columnas) {
+    
 
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                matriz[i][j] = 1 + aleatorio.nextInt(10);
+    public static int[][] llenadoMatriz(int[][] mat, int i, int j) {
+        if (i < mat.length) {
+            if (j < mat[0].length) {
+                mat[i][j] = aleatorio.nextInt(9);
+                return llenadoMatriz(mat, i, j + 1);
             }
+            return llenadoMatriz(mat, i + 1, 0);
         }
-        return matriz;
-    }//Fin del metodo crear matriz
+        return mat;
+    }
 
-    public static String imprimir(int[][] numeros, int filas, int columnas, String cad) {
-
-        for (int i = 0; i < numeros.length; i++) {
-            for (int j = 0; j < numeros[i].length; j++) {
-                cad += "[" + numeros[i][j] + "]";
+    public static String imprimirMatriz(int[][] mat, int i, int j, String salida) {
+        if (i < mat.length) {
+            if (j < mat[0].length) {
+                return imprimirMatriz(mat, i, j + 1, salida + mat[i][j] + "   ");
             }
-            cad += "\n";
+            return imprimirMatriz(mat, i + 1, 0, salida + '\n');
         }
-        return cad;
-    }//Fin metodo imprimir
+        return salida;
+    }
 
+    public static int rowProduct(int[][] matA, int[][] matB, int i, int j, int k, int res) {
+        if (k < matA[0].length) {
+            return rowProduct(matA, matB, i, j, k + 1, res + (matA[i][k] * matB[k][j]));
+        }
+        return res;
+    }
 
+    public static int[][] multiplicacion(int[][] matA, int[][] matB, int[][] matC, int i, int j) {
+        if (i < matA.length) {
+            if (j < matB[0].length) {
+                matC[i][j] = rowProduct(matA, matB, i, j, 0, 0);
+                return multiplicacion(matA, matB, matC, i, j + 1);
+            }
+            return multiplicacion(matA, matB, matC, i + 1, 0);
+        }
+        return matC;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnConvertidor;
     private javax.swing.JButton BtnMenuPrincipal;
