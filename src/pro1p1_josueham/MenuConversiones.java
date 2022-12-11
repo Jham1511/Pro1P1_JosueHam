@@ -6,6 +6,7 @@ package pro1p1_josueham;
 
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import java.util.*;
 /**
  *
  * @author SKX Kafei
@@ -138,9 +139,9 @@ public class MenuConversiones extends javax.swing.JFrame {
     private void BtnDecimalABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDecimalABinarioActionPerformed
         String StrDec = JOptionPane.showInputDialog(null, "Ingrese un numero decimal: ");
         int dec = Integer.parseInt(StrDec);
+        ArrayList<Integer> binario = new ArrayList<>();
         
-        
-        JOptionPane.showMessageDialog(null, "El numero decimal " + dec + " en binario es:\n" + decToBin(dec));
+        JOptionPane.showMessageDialog(null, "El numero decimal " + dec + " en binario es:\n" + decToBin(dec,binario));
     }//GEN-LAST:event_BtnDecimalABinarioActionPerformed
 
     private void BtnBinarioADecimalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnBinarioADecimalMouseEntered
@@ -210,31 +211,37 @@ public class MenuConversiones extends javax.swing.JFrame {
     }
 
     public static int binToDec(int[] bin, int cont, int decimal) {
-        // Recibe el binario ya dado vuelta
-        if (cont < bin.length) //Decision base
-            if (bin[cont] == 1) //Si el binario en la posicion del contador es 1 
-                return binToDec(bin, cont+1, decimal + (int) Math.pow(2, cont)); //Si se cumple la condicion anterior se retorna y se llama el metodo, incrementando el contador
+        // Recibe el binario dado vuelta
+        if (cont < bin.length) // Condicion para recursividad
+            if (bin[cont] == 1)
+                // Se incrementa el contador y se acumula el resultado de 2 elevado a cont
+                return binToDec(bin, cont+1, decimal + (int) Math.pow(2, cont));
             else
-                return binToDec(bin, cont+1, decimal); //Si no se cumple la condicion, se vuelve a llamar al metodo pero sin sumarle al decimal la potencia de 2^cont ya que ya seria 0
-        else
-            return decimal;//Se retorna al final los cambios realizados al decimal
-    }//Fin metodo binToDec
+                // Se incrementa el contador y no se acumula nada porque bin[cont] es 0
+                return binToDec(bin, cont+1, decimal);
+        else // Fin recursion, se retorna el valor decimal obtenido
+            return decimal;
+    }
     
     
     
-    public int decToBin (int dec){
-        if (dec < 2) { 
-            return dec; 
-        } else {
-            return dec%2 + decToBin(dec/2)*10;
+   public static ArrayList decToBin(int dec, ArrayList binario) {
+        if (dec >= 1) { // Condicion para recursividad
+            // Se agrega el digito al inicio del ArrayList para guardar el numero binario en el orden debido
+            if (dec % 2 == 0)
+                // Si el residuo es 0, se agrega un 0
+                binario.add(0, 0);
+            else
+                // Si el residuo es distinto de 0, se agrega un 1
+                binario.add(0, 1);
+            return decToBin(dec/2, binario);
         }
-    }//Fin del metodo de decToBin
+        else // Fin recursion, se retorna el numero binario almacenado en el ArrayList
+            return binario;
+    }
     
     
-    // la condicion del if es el caso base donde termina la ejecucion, en el else volvemos a llamar el metodo para realizar los calculos con el entero ingresado
-    //dec%2 no va a ser mayor de 2
-    //decToBin(dec/2) hace el llamado del metodo para hacer los calculos
-    //*10 para que se realice correctamente el binario 
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBinarioADecimal;

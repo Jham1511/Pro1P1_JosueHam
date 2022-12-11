@@ -258,22 +258,24 @@ public class Recursion extends javax.swing.JFrame {
     }
 
     public static int rowProduct(int[][] matA, int[][] matB, int i, int j, int k, int res) {
-        if (k < matA[0].length) {
-            return rowProduct(matA, matB, i, j, k + 1, res + (matA[i][k] * matB[k][j]));
-        }
-        return res;
+        if (k < matA[0].length) // Condicion para recursividad
+            // Se incrementa k y se acumula la multiplicacion de la fila i de la matriz A con la columna j de la matriz B
+            return rowProduct(matA, matB, i, j, k+1, res + (matA[i][k] * matB[k][j]));
+        return res; // Fin recursion, se retorna el valor acumulado de la multiplicacion
     }
 
     public static int[][] multiplicacion(int[][] matA, int[][] matB, int[][] matC, int i, int j) {
-        if (i < matA.length) {
-            if (j < matB[0].length) {
-                matC[i][j] = rowProduct(matA, matB, i, j, 0, 0);
-                return multiplicacion(matA, matB, matC, i, j + 1);
+        if (i < matA.length) { // Condicion para recursividad de filas
+            if (j < matB[0].length) { // Condicion para recursividad de columnas
+                // Se asigna el valor del elemento [i][j] de C
+                matC[i][j] = rowProduct(matA, matB, i, j, 0, 0); // Multiplicacion de la fila i de la matriz A con la columna j de la matriz B
+                return multiplicacion(matA, matB, matC, i, j+1); // Se incrementa j
             }
-            return multiplicacion(matA, matB, matC, i + 1, 0);
+            return multiplicacion(matA, matB, matC, i+1, 0); // Se incrementa i, se reinicia j
         }
-        return matC;
+        return matC; // Fin recursion, se retorna la matriz C resultante de la multiplicacion de A y B
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnConvertidor;
     private javax.swing.JButton BtnMenuPrincipal;
